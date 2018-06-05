@@ -1,0 +1,1137 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Escalabilidad en Proyectos Software</title>
+
+		<meta name="description" content="Escalabilidad en Proyectos Software">
+		<meta name="author" content="Javier Matos Odut">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="revealjs/css/reveal.min.css">
+		<link rel="stylesheet" href="revealjs/css/theme/default.css" id="theme">
+    <link rel="stylesheet" href="style.css">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="revealjs/lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+		<script>
+			if( window.location.search.match( /print-pdf/gi ) ) {
+				var link = document.createElement( 'link' );
+				link.rel = 'stylesheet';
+				link.type = 'text/css';
+				link.href = 'revealjs/css/print/pdf.css';
+				document.getElementsByTagName( 'head' )[0].appendChild( link );
+			}
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="revealjs/lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+        <!-- Portada -->
+        <section data-background="img/fractal_brocoli-dark35.jpg">
+          <h1>Escalabilidad en<br>Proyectos Software</h1>
+          <p>
+            Fundamentos, consejos y herramientas útiles para crear sistemas capaces de ofrecer un servicio a millones de usuarios
+          </p>
+          <p>
+            <a href="http://javiermatos.com">Javier Matos Odut</a>
+          </p>
+          <p>
+            <small><a href="mailto:iam@javiermatos.com">iam@javiermatos.com</a></small>
+          </p>
+        </section>
+
+        <!-- Definición -->
+        <section>
+
+          <section>
+            <h2>¿Qué es la escalabilidad?</h2>
+          </section>
+
+          <section>
+            <h2>Escalabilidad ≠ Velocidad</h2>
+            <p>
+              Un sistema veloz hace algo en poco espacio de tiempo, pero esto no es realmente escalabilidad...
+            </p>
+          </section>
+
+          <section>
+            <h2>¿Qué es la escalabilidad?</h2>
+            <p style="text-align: left;">
+              La escalabilidad es la propiedad deseable de un sistema, una red o un proceso, que indica su habilidad para...
+            <ul>
+              <li>reaccionar y adaptarse sin perder calidad</li>
+              <li>manejar el crecimiento continuo de trabajo de manera fluida</li>
+              <li>estar preparado para hacerse más grande sin perder calidad en los servicios ofrecidos</li>
+            </ul>
+            </p>
+          </section>
+
+          <section>
+            <h2>¿Cuándo logramos un <br>sistema escalable?</h2>
+            <p>
+              En computación, decimos que logramos un sistema escalable cuando su rendimiento se incrementa de forma proporcional a la capacidad hardware que se le agrega
+            </p>
+            <br>
+            <h3>¿De qué manera podemos agregar<br>capacidad hardware?</h3>
+          </section>
+
+          <section>
+            <h2>Escalabilidad vertical</h2>
+            <div style="width: 45%; float: left;">
+              <img src="img/vertical-scalability.svg" width="100%">
+            </div>
+            <div style="width: 55%; float: left; text-align: left;">
+              <ul>
+                <li style="color: greenyellow;">Fácil y rápido de escalar</li>
+                <li style="color: orange;">Un servidor no se puede ampliar indefinidamente</li>
+                <li style="color: orange;">Si optamos por uno nuevo, el precio de los servidores no es lineal respecto a su rendimiento</li>
+                <li style="color: orange;">Punto de fallo único</li>
+                <li style="color: orange;">Si compramos uno nuevo el anterior deja de utilizarse (no podemos sumar rendimientos)</li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h2>Escalabilidad horizontal</h2>
+            <img src="img/horizontal-scalability.png" height="240">
+            <ul>
+              <li style="color: greenyellow;">Podemos escalar agregando nuevos nodos</li>
+              <li style="color: greenyellow;">Desaparece el punto de fallo único</li>
+              <li style="color: greenyellow;">Los nuevos nodos agregan potencia a los que ya están funcionando (se suman los rendimientos)</li>
+              <li style="color: greenyellow;">Se suele utilizar <i>commodity hardware</i></li>
+              <li style="color: orange;">Es complicado el desarrollar aplicaciones distribuídas</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Commodity hardware</h2>
+            <img src="img/google_server_large.jpg">
+          </section>
+
+          <section>
+            <h2>Commodity hardware</h2>
+            <p>Commodity hardware para dedicar todo el rendimiento del equipo en la actividad que necesitamos</p>
+            <br><br>
+            <h2>Virtualización</h2>
+            <p>Equipos virtuales para particionar un servidor potente y sacarle todo el partido en tareas específicas (aprovecha la concurrencia)</p>
+          </section>
+
+        </section>
+
+        <!-- Contexto -->
+        <section>
+
+          <section>
+            <h2>¿Por qué es necesario hacer los sistemas escalables?</h2>
+            <p>El fenómeno de las startups</p>
+          </section>
+
+        </section>
+
+        <!-- Cómo está organizada la presentación -->
+        <section>
+
+          <section>
+            <h2>Cómo está organizada la presentación</h2>
+            <p>
+              Se parte de un sistema desplegado en un único nodo. Siguiendo un <mark>proceso iterativo y evolutivo</mark> mejoramos el sistema para hacerlo más escalable y superar los diferentes cuellos de botella.
+            </p>
+            <img src="img/iterative-process.svg" height="400">
+          </section>
+
+          <section>
+            <h2>Cómo resolvemos un <br>problema de escalabilidad</h2>
+            <p><mark>Distribuímos el trabajo</mark> en nuestro sistema de acuerdo a los siguientes principios (se pueden combinar)</p>
+            <ul>
+              <li>Diseña para <mark>clonar</mark> cosas
+                <ul>
+                  <li>Servidores web, servidores de aplicación, servidores de bases de datos, servidores de caché...</li>
+                </ul>
+              </li>
+              <li>Diseña para <mark>separar cosas diferentes</mark>
+                <ul>
+                  <li>Login, creación de usuarios, búsquedas, órdenes de compra, subida de fotos...</li>
+                </ul>
+              </li>
+              <li>Diseña para <mark>dividir cosas similares</mark>
+                <ul>
+                  <li>Bases de datos de usuarios, transacciones costosas, colas de procesamiento, contenido estático...</li>
+                </ul>
+              </li>
+            </ul>
+          </section>
+
+        </section>
+
+        <!-- Estado inicial y descomposición del sistema -->
+        <section>
+
+          <section>
+            <h2>Estado inicial del sistema</h2>
+            <div style="width: 40%; float: left;">
+              <img src="img/step0.svg" height="500px">
+            </div>
+            <div style="width: 60%; float: left;">
+              <ul>
+                <li>Todo el sistema reside en un único nodo o máquina</li>
+                <li>El <mark>servidor web</mark> procesa las peticiones del usuario. Los archivos estáticos los sirve sin más. El contenido dinámico lo genera el servidor de aplicación.</li>
+                <li>El <mark>servidor de aplicación</mark> es nuestro proyecto. Es responsable de generar el contenido dinámico cuando se le requiere.</li>
+                <li>El <mark>servidor de base de datos</mark> contiene los objetos y entidades que manipulamos en la aplicación.</li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h2>Descomponemos el sistema</h2>
+            <div style="width: 20%; float: left;">
+              <img src="img/step0.svg">
+            </div>
+
+            <div style="width: 60%; float: left;">
+              <ul style="padding: 15px;">
+                <li>Separar cosas diferentes</li>
+                <br>
+                <li>Rendimientos diferentes</li>
+                <br>
+                <li>Requisitos diferentes
+                  <br><br>
+                  <table>
+                    <thead>
+                    <th>Servidor</th>
+                    <th>CPU</th>
+                    <th>MEM</th>
+                    <th>HDD</th>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <td>Web</td>
+                      <td style="color: greenyellow;">bajo</td>
+                      <td style="color: greenyellow;">bajo</td>
+                      <td style="color: greenyellow;">bajo</td>
+                    </tr>
+                    <tr>
+                      <td>Aplicación</td>
+                      <td style="color: orange;">medio</td>
+                      <td style="color: orange;">medio</td>
+                      <td style="color: greenyellow;">bajo</td>
+                    </tr>
+                    <tr>
+                      <td>DB</td>
+                      <td style="color: orangered;">alto</td>
+                      <td style="color: orangered;">alto</td>
+                      <td style="color: orangered;">alto</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </li>
+                <br>
+              </ul>
+            </div>
+            <div style="width: 20%; float: left;">
+              <img src="img/step1.svg">
+            </div>
+          </section>
+
+        </section>
+
+        <!-- Mediciones del sistema -->
+        <section>
+
+          <section>
+            <h2>Nuestro sistema<br>no puede ser una caja negra</h2>
+            <div style="width: 35%; float: left;">
+              <img src="img/step1.svg" height="500">
+            </div>
+            <div style="width: 65%; float: left;">
+              <ul>
+                <li>Sabemos que existen elementos diferentes que interactuan</li>
+                <li>Los usuarios hacen peticiones a nuestro sistema y se responden</li>
+                <li>Y bueno... esto... mmmm... creo que ya con eso está todo, ¿no?</li>
+              </ul>
+              <br><br>
+              <h3>¡En realidad no sabemos nada!</h3>
+            </div>
+          </section>
+
+          <section>
+            <h2>Medir y conocer el estado del sistema</h2>
+            <p>
+              Si no tenemos mediciones de todos los aspectos del sistema no sabemos <mark>cómo se comporta cuando funciona bien, cómo lo hace cuando funciona mal</mark> y mucho menos podemos identificar los problemas que ocurren para hallar soluciones. Las mediciones nos ayudan a <mark>detectar tendencias y adelantarnos a los sucesos</mark>.
+            </p>
+            <br>
+            <div style="width: 35%; float: left;">
+              <img src="img/iterative-process.svg">
+            </div>
+            <div style="width: 65%; float: left;">
+              <h3>¡Sin mediciones estamos perdidos!</h3>
+            </div>
+          </section>
+
+          <section>
+            <h2>Protocolo SNMP</h2>
+            <p>
+              Facilita el intercambio de información de administración entre dispositivos de red
+            </p>
+            <div style="width: 50%; float: left;">
+              <img src="img/MIB-tree.svg">
+            </div>
+            <div style="width: 50%; float: left;">
+              <img src="img/snmpwalk.png">
+            </div>
+            <p>
+              Comandos: snmpwalk, snmpbulkwalk, snmp*
+            </p>
+          </section>
+
+          <section>
+            <h2>Mediciones en el tiempo: SNMP</h2>
+            <p>
+              Es importante capturar el estado y la evolución de todos los aspectos de nuestro sistema a lo largo del tiempo
+            </p>
+            <img src="img/cacti_graphs.png">
+            <p>
+              <a href="http://www.nagios.org/">Nagios</a>, <a href="http://www.cacti.net/">Cacti</a>, <a href="http://www.zenoss.com/">Zenoss</a>, <a href="http://www.zabbix.com/">Zabbix</a> y <a href="http://en.wikipedia.org/wiki/Comparison_of_network_monitoring_systems">otros muchos más</a>...
+            </p>
+          </section>
+
+          <section>
+            <h2>Logs en tiempo real: Syslog</h2>
+            <p>
+              Hay que conocer los eventos de todo el sistema en tiempo real...
+            </p>
+            <img src="img/logs.png">
+            <p>
+              <a href="http://logstash.net/">logstash</a>, <a href="http://fluentd.org/">fluentd</a>, <a href="http://www.splunk.com/">splunk</a>, <a href="http://flume.apache.org/">Flume</a>
+            </p>
+          </section>
+
+          <section>
+            <h2>Logs en tiempo real: Syslog</h2>
+            <p>
+              ...y poder recogerlos en un lugar centralizado
+            </p>
+            <img src="img/kibana.png">
+            <p>
+              <a href="http://www.elasticsearch.org/">ElasticSearch</a>, <a href="http://www.elasticsearch.org/overview/kibana/">Kibana</a>, <a href="https://getsentry.com/">Sentry</a>, <a href="http://graphite.wikidot.com/">Graphite</a>
+            </p>
+          </section>
+
+          <section>
+            <h2>Logs en tiempo real: Agregación</h2>
+            <p>
+              Si trabajamos con demasiados logs es importante utilizar estrategias de agregación para evitar vernos abrumados
+            </p>
+            <img src="img/sentry.png" height="350">
+            <img src="img/graphite.png" height="350">
+            <p>
+              <a href="http://www.elasticsearch.org/">ElasticSearch</a>, <a href="http://www.elasticsearch.org/overview/kibana/">Kibana</a>, <a href="https://getsentry.com/">Sentry</a>, <a href="http://graphite.wikidot.com/">Graphite</a>
+            </p>
+          </section>
+
+        </section>
+
+        <!-- Bases de datos -->
+        <section>
+
+          <section>
+            <h2>Primer cuello de botella:<br>la base de datos</h2>
+            <div style="width: 35%; float: left;">
+              <img src="img/step1.svg" height="480">
+            </div>
+            <div style="width: 65%; float: left;">
+              <ul>
+                <li>Notamos que las peticiones de los usuarios se resuelven muy lento por culpa de la base de datos</li>
+                <li>El servidor de aplicaciones pasa la mayor parte del tiempo esperando</li>
+                <li><mark>Las peticiones se acumulan a mayor velocidad de lo que se responden</mark></li>
+              </ul>
+              <br><br>
+              <h3>¡Tenemos que resolver el problema de la base de datos!</h3>
+            </div>
+          </section>
+
+          <section>
+            <h2>Las lecturas son lentas (1)</h2>
+            <ul>
+              <li>Descubrimos que los usuarios consumen datos en una proporción mucho mayor a la que los generan</li>
+              <li>Una vez publicado un contenido por parte de un usuario, muchos otros usuarios leen ese contenido</li>
+              <li>Las operaciones de escritura no son un problema</li>
+              <li>¿Escalamos el sistema para mejorar la lectura de datos?</li>
+              <li>Utilizamos un <mark>esquema de replicación master/slave</mark> en SQL</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Las lecturas son lentas (2)</h2>
+            <p>
+              Sincronizamos los servidores de bases de datos para que se hagan las <mark>escrituras en el <i>master</i></mark> y las <mark>lecturas en los <i>slaves</i></mark>
+            </p>
+            <img src="img/master-slave-cluster.svg" height="400">
+            <p>Todas <mark>las bases de datos en el cluster son réplicas exactas</mark> y con ellas el <mark>rendimiento en lectura se multiplica</mark> por 3</p>
+          </section>
+
+          <section>
+            <h2>Demasiados usuarios para una BD (1)</h2>
+            <ul>
+              <li>Nuestro web, nuestro sistema... ¡todo funcionaba bien...</li>
+              <li>...hasta que llegaron los usuarios!</li>
+              <li>Ya no podemos almacenar todos los usuarios en una única base de datos (la tabla de usuarios es enooooooooorme)</li>
+              <li>¿Y si repartimos la tabla de usuarios en múltiples servidores?</li>
+              <li>Utilizamos una <mark>partición de la tabla en <i>shards</i></mark></li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Demasiados usuarios para una BD (2)</h2>
+            <p>
+              Dividimos la tabla de usuarios de acuerdo a alguna estrategia (aleatorio, módulo, hash...) y la repartimos en varios servidores
+            </p>
+            <img src="img/sharding.svg" height="450">
+            <p>
+              Ahora podemos almacenar más usuarios y además el <mark>rendimiento se multiplica</mark> por 4
+            </p>
+          </section>
+
+          <section>
+            <h2>Decisiones complicadas (1)</h2>
+            <ul>
+              <li>Pensábamos que estaba todo resuelto, pero ahora teníamos un reto nuevo que era difícil de resolver</li>
+              <li>Los usuarios se escriben mensajes entre sí y...
+                <ul>
+                  <li>puedo almacenar los mensajes de acuerdo al destinatario y facilitar la operación de lectura de mensajes recibidos</li>
+                  <li>o puedo almacenar los mensajes según emisor y facilitar la lectura de mensajes enviados</li>
+                  <li>si no lo hago de alguna de las formas anteriores entonces ambas operaciones serán ineficientes</li>
+                </ul>
+              </li>
+              <li>Caso de muros o conversaciones de Facebook, Twitter...</li>
+              <li>¿Y qué tal si <mark>duplico información y almaceno lo mismo de las dos formas</mark>? Sacrifico almacenamiento y gano rendimiento</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Decisiones complicadas (2)</h2>
+            <p>La ventaja de esta duplicidad es que <mark>la lectura de mensajes enviados y recibidos es eficiente</mark>. Además, un usuario puede borrar sus mensajes sin afectar a los demás usuarios.</p>
+            <img src="img/msg-sent-recv.svg" height="450">
+          </section>
+
+          <section>
+            <h2>Alternativas más allá de SQL</h2>
+            <ul>
+              <li>Hasta el momento hemos escalado bases de datos SQL</li>
+              <li>Hay muy buenas bases de datos SQL como son <a href="http://www.mysql.com/">MySQL</a>, <a href="http://www.percona.com/">Percona</a> (buen clustering), <a href="https://mariadb.org/">MaríaDB</a> y <a href="http://www.postgresql.org/">PostgreSQL</a></li>
+              <li>Sin embargo, existen otras alternativas "mejores"</li>
+              <li>¿Qué hay de las bases de datos NoSQL? ¿acaso no permiten escalar más fácil? Además, tenemos muchas opciones: <a href="http://hbase.apache.org/">HBase</a> (BigTable de Google), <a href="http://cassandra.apache.org/">Cassandra</a> (Facebook, Twitter, Digg), <a href="http://www.mongodb.org/">MongoDB</a>, <a href="http://couchdb.apache.org/">CouchDB</a>, <a href="http://redis.io/">Redis</a>, <a href="http://www.elasticsearch.org/">ElasticSearch</a>, <a href="http://www.neo4j.org/">Neo4j</a>...</li>
+              <li>Ah, y que no se nos olviden los archivos en disco duro, que para ciertos casos pueden ser la mejor opción</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Características de nuestros datos</h2>
+            <ul>
+              <li>¿Conocemos bien cómo son nuestros datos y cómo han de ser manipulados? ¿utilizar X es la mejor forma para almacenarlos?</li>
+              <li>¿Es mejor SQL o NoSQL? (o inclusive un archivo)</li>
+              <li>Las bases de datos SQL fueron diseñadas y pensadas con un propósito diferente a las bases de datos NoSQL, aunque pensemos en ambas opciones como equivalentes</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Un poco de teoría sobre bases de datos</h2>
+            <p style="text-align: left;">
+              En informática, el <a href="http://en.wikipedia.org/wiki/CAP_theorem">teorema CAP</a>, también llamado Teorema de <a href="http://en.wikipedia.org/wiki/Eric_Brewer_(scientist)">Brewer</a>, establece que es imposible para un sistema de cómputo distribuido garantizar simultáneamente:
+              <ol>
+                <li>La <mark>consistencia</mark> (Consistency), es decir, que todos los nodos vean la misma información al mismo tiempo</li>
+                <li>La <mark>disponibilidad</mark> (Availability), es decir, la garantía de que cada petición a un nodo reciba una confirmación de si ha sido o no resuelta satisfactoriamente</li>
+                <li>La <mark>tolerancia</mark> a fallos (Partition Tolerance), es decir, que el sistema siga funcionando a pesar de algunas pérdidas arbitrarias de información o fallos parciales del sistema</li>
+              </ol>
+            </p>
+          </section>
+
+          <section data-background="#000000">
+            <img src="img/visual-guide-to-nosql-systems.png">
+          </section>
+
+          <section>
+            <h2>Caché</h2>
+            <ul>
+              <li>Almacenamos todo en la base de datos aunque...
+                <ul>
+                  <li>no todos los datos se consumen</li>
+                  <li>sólo un subconjunto de datos se consume de forma intensiva (más recientes, más referenciados...)</li>
+                  <li>la frecuencia de acceso a cada dato es diferente, y todos se sirven de la misma forma → <mark>ineficiencia</mark></li>
+                </ul>
+              </li>
+              <li>Observamos que con el tiempo varían los datos que consumen nuestros usuarios de forma intensiva</li>
+              <li>El valor de los datos que almacenamos decrece con el tiempo</li>
+            </ul>
+            <br><br>
+            <h3>¡Optimicemos el acceso a los datos más utilizados!</h3>
+          </section>
+
+          <section>
+            <h2>Utilidad de la caché</h2>
+            <ul>
+              <li><mark>Caché hit</mark>: el dato está contenido en la caché y se sirve desde memoria, con el consiguiente aumento de velocidad</li>
+              <li><mark>Caché miss</mark>: el dato no está contenido en la caché. Se lee el dato desde su orígen, se sirve el dato solicitado y además de actualiza la caché para la próxima lectura.</li>
+              <li>Nos podemos permitir políticas complejas de actualización de caché debido al elevado coste de leer el dato de origen</li>
+              <li>Heurística para saber cuántos servidores de caché utilizar:<br><mark>si caché hit < 85%, entonces ponemos más servidores</mark></li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Utilización de caché en Facebook</h2>
+            <p>A finales de 2008 Facebook utilizaba más de 800 servidores de caché con una capacidad de más de 28 TB de memoria (<a href="http://gigaom.com/2012/09/19/at-facebook-cache-is-king-heres-how-it-keeps-it-up/">enlace</a>)</p>
+            <div style="width: 50%; float: left;"><img src="img/facebook-claspin1.jpg"></div>
+            <div style="width: 50%; float: left;"><img src="img/facebook-claspin2.jpg"></div>
+            <p>Han desarrollado <a href="https://www.facebook.com/notes/facebook-engineering/monitoring-cache-with-claspin/10151076705703920">Claspin</a>, que es una aplicación que representa de forma visual e intuitiva el estado de la caché de su sistema</p>
+          </section>
+
+          <section>
+            <h2>Escalando en manejo de datos</h2>
+            <img src="img/step2.svg" height="600">
+          </section>
+        </section>
+
+        <!-- Contenido dinámico -->
+        <section>
+
+          <section>
+            <h2>Segundo cuello de botella:<br>el servidor de aplicación</h2>
+            <div style="width: 35%; float: left;">
+              <img src="img/step2.svg" height="500">
+            </div>
+            <div style="width: 65%; float: left;">
+              <ul>
+                <li>La mejora en la arquitectura de las bases de datos ha multiplicado el rendimiento de acceso a los datos</li>
+                <li>Con la caché servimos desde memoria la mayoría de datos solicitados</li>
+                <li><mark>El servidor de aplicación trabaja a pleno rendimiento y aún así es insuficiente</mark></li>
+              </ul>
+              <br><br>
+              <h3>¡Tenemos que escalar el servidor de aplicaciones!</h3>
+            </div>
+          </section>
+
+          <section>
+            <h2>Contenido dinámico (1)</h2>
+            <ul>
+              <li>Se ha mejorado el acceso a bases de datos y se utiliza caché</li>
+              <li>Sabemos que las peticiones de usuarios son independientes</li>
+              <li>Podemos escalar el sistema desplegando más servidores de aplicación y configurando el servidor web
+                <pre><code data-trim>
+# Configuración con Nginx para balanceo de carga
+http {
+    upstream app_cluster {
+        server app_server1.example.com;
+        server app_server2.example.com;
+        server app_server3.example.com;
+    }
+
+    server {
+        listen 80;
+
+        location / {
+            proxy_pass http://app_cluster;
+        }
+    }
+}
+                </code></pre>
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Contenido dinámico (2)</h2>
+            <ul>
+              <li>El contenido dinámico depende del servidor de aplicación, que es nuestra creación y depende por completo de nosotros</li>
+              <li>Hay que implementar el servidor de aplicación siguiendo buenas prácticas de programación y buscar la eficiencia, pero <mark>no realizar optimizaciones tempranas</mark> (perdemos simplicidad)</li>
+              <li><mark>Sólo genera contenido cuando se producen cambios, sino usa la caché</mark> y almacéna los datos para la siguiente consulta</li>
+              <li>Organiza el sistema en <mark>componentes aislados</mark>: por un lado los que generan contenido muy cambiante, y por el otro los que generan contenido poco cambiante</li>
+              <li>El mejor consejo: <mark>evita los problemas y no dediques esfuerzo en tener que resolverlos</mark></li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Escalando en procesamiento</h2>
+            <img src="img/step3.svg" height="600">
+          </section>
+
+        </section>
+
+        <!-- Desacoplamiento y llamadas asíncronas -->
+        <section>
+
+          <section>
+            <h2>Tercer cuello de botella:<br>interacción del usuario</h2>
+            <div style="width: 35%; float: left;">
+              <img src="img/step3.svg">
+            </div>
+            <div style="width: 65%; float: left;">
+              <ul>
+                <li>Todas las peticiones de usuarios se responden rápido, menos aquellas relativas a acciones lentas</li>
+                <li>Parece que a veces es inevitable hacer que algunas peticiones tomen su tiempo, y más si se refieren a IO</li>
+                <li><mark>El usuario debería concienciarse de que ciertas acciones suyas toman un tiempo para realizarse</mark></li>
+              </ul>
+              <br><br>
+              <h3>¡Hemos de hacer lo que sea para evitar las esperas del usuario!</h3>
+            </div>
+          </section>
+
+          <section>
+            <h2>Un usuario borra una foto (1)</h2>
+            <ol style="color: greenyellow">
+              <li>Recibimos la petición de borrado en un servidor de aplicación</li>
+              <li>Realizamos una llamada al servicio de almacenamiento
+                <ol style="color: orange">
+                  <li>El servicio busca la foto consultando una base de datos</li>
+                  <li>Marca la foto como eliminada para que no esté disponible</li>
+                  <li>Ordena el borrado de la foto al servidor donde se está almacenando
+                    <ol style="color: orangered">
+                      <li>El servidor elimina la foto</li>
+                      <li>Devuelve el resultado de la operación</li>
+                    </ol>
+                  </li>
+                  <li>Si se borró con éxito elimina la referencia en base de datos</li>
+                  <li>Recibe la respuesta y notifica al servidor de aplicación</li>
+                </ol>
+              </li>
+              <li>El servicio responde con el resultado de la operación</li>
+              <li>Enviamos el resultado de la operación al usuario</li>
+            </ol>
+            <br><br>
+            <p>¿Alguien ha dicho <code>Timeout Error</code>?</p>
+          </section>
+
+          <section data-background="#000000">
+            <h2>Un usuario borra una foto (2)</h2>
+            <img src="img/loading.gif">
+            <ul>
+              <li>A nadie le gusta esperar, ¡reconozcámoslo!</li>
+              <li>Los navegadores web (lado usuario) y los servidores web (nuestro lado) lanzan <code>Timeout Error</code></li>
+              <li>En los servidores web matamos a los procesos bloqueados. ¿Terminará o no el proceso? (problema de la parada)</li>
+              <li>Existen procesos o tareas lentas cuyo requisito temporal excede el tiempo de vida de una petición</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Un usuario borra una foto (3)</h2>
+            <ul>
+              <li>Al usuario no le gusta esperar, ¡nunca!</li>
+              <li>¿Tenemos que hacer esperar su petición hasta tener la confirmación de que su foto ha sido eliminada del sistema?</li>
+              <li>A ver... idealmente, el usuario espera pulsar el botón de borrado, que la foto "le aparezca como que ya no está" y que pueda seguir navegando en nuestra aplicación</li>
+              <li>Qué tal si...</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Un usuario borra una foto (4)</h2>
+            <ol style="color: greenyellow">
+              <li>Recibimos la petición de borrado en un servidor de aplicación</li>
+              <li>Deshabilitamos la foto para no seguir sirviéndola</li>
+              <li><mark>Creamos una tarea para borrar realmente la foto</mark></li>
+              <li>Respondemos al usuario que su foto ha sido borrada</li>
+            </ol>
+            <br><br>
+            <p>
+              La creación de la tarea es inmediata y no bloquea el flujo de ejecución. La percepción del usuario es que hemos sido más rápidos borrando su foto. La foto ya no está disponible para otros usuarios, y la tarea de borrado se encarga de eliminarla.
+            </p>
+            <pre><code data-trim>
+/path/to/command arg1 arg2 &  # Tarea en segundo plano
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>Un usuario borra una foto (5)</h2>
+            <ul>
+              <li>En realidad podemos hacerlo mejor, pues el usuario espera menos pero de todas formas sigue teniendo que esperar</li>
+              <li>Desarrollamos todo el proceso mediante <mark>llamadas asíncronas</mark> para notificar al usuario con el resultado de la tarea</li>
+              <li>No bloqueamos el flujo de ejecución y permitimos al usuario seguir navegando mientras está atento a un evento</li>
+              <li>En algún momento el usuario recibe un <mark>evento</mark> con el resultado de la operación que procesamos con un <mark>callback</mark></li>
+            </ul>
+            <pre><code data-trim>
+function slowTaskCallback() {
+    console.log(this.responseText);
+}
+
+var oReq = new XMLHttpRequest();
+oReq.onload = slowTaskCallback;
+oReq.open("get", "http://api.example.com/a/restful/resource", true);
+oReq.send();
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>Un usuario borra una foto (6)</h2>
+            <p>Finalmente, la solución ideal combina dos elementos diferentes en el lado del usuario y en el lado de nuestro sistema:
+              <ul>
+                <li><mark>Navegador del usuario</mark>
+                  <ul>
+                    <li>Llamadas asíncronas al servidor. Enviamos la petición y esperamos respuesta en forma de evento asíncrono.</li>
+                  </ul>
+                </li>
+                <li><mark>Nuestro sistema</mark>
+                  <ul>
+                    <li>Llamadas asíncronas entre servicios internos. Enviamos la petición sin bloquear ni hacer esperar al procesador.</li>
+                    <li>Para las operaciones costosas creamos una tarea mediante el envío de un mensaje que se encola en alguna parte</li>
+                    <li>Si no queremos hacer algo ahora tenemos que decirle a alguien que lo haga después, y esto es la mensajería</li>
+                    <li>El mensaje se encola y cuando llegue su turno se ejecuta la tarea asociada</li>
+                  </ul>
+                </li>
+              </ul>
+            </p>
+          </section>
+
+          <section>
+            <h2>Un usuario borra una foto (7)</h2>
+            <ul>
+              <li><mark>Llamadas asíncronas en el lado del servidor</mark>
+                <ul>
+                  <li>Podemos utilizar JavaScript en el lado del servidor con <a href="http://nodejs.org/">Node.js</a>. La ventaja principal es que las bibliotecas para este servidor de aplicación son asíncronas y no bloquean.</li>
+                  <li>También hay opciones en Python, con bibliotecas como <a href="https://twistedmatrix.com/">Twisted</a>, <a href="http://www.tornadoweb.org/">Tornado</a> o <a href="http://gunicorn.org/">Gunicorn</a> entre otros.</li>
+                  <li>Las anteriores son en realidad bibliotecas de <i>networking</i> que implementan el patrón reactor</li>
+                </ul>
+              </li>
+              <li><mark>Procesamiento de tareas en colas</mark>
+                <ul>
+                  <li>Existen muchas alternativas para desplegar un sistema de mensajería con colas: <a href="http://www.amqp.org/">AMPQ</a>, <a href="http://jms-spec.java.net/">JMS</a> y <a href="http://www.spread.org/">Spread</a></li>
+                  <li>Una buena opción es <a href="http://www.rabbitmq.com/">RabbitMQ</a>, que implementa AMPQ con el lenguaje Erlang</li>
+                </ul>
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Diagrama de eventos</h2>
+            <img src="img/async_call.svg" height="600">
+          </section>
+
+          <section>
+            <h2>Agregamos servidores de tareas</h2>
+            <img src="img/step4.svg" height="600">
+          </section>
+
+        </section>
+
+        <!-- Contenido estático -->
+        <section>
+
+          <section>
+            <h2>Cuarto cuello de botella:<br>Descargas de archivos estáticos</h2>
+            <div style="width: 50%; float: left;">
+              <img src="img/step4.svg">
+              <h3>¡Sirvamos archivos estáticos más rápido!</h3>
+            </div>
+            <div style="width: 50%; float: left;">
+              <ul>
+                <li>Vale, parece que lo tenemos todo bajo control pero...</li>
+                <li>Nuestra aplicación es lo importante y lo esencial, aunque también hemos de enviar contenido estático</li>
+                <li>Empleamos demasiados recursos para servir archivos estáticos que deberían distribuirse más fácilmente</li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h2>Contenido estático</h2>
+            <ul>
+              <li>El contenido estático se refiere a los archivos que se envían al usuario sin realizar computación alguna sobre ellos, y que por tanto se pueden enviar muy rápido</li>
+              <li>Ejemplos de archivos estáticos son los siguientes: HTML, CSS, JS, imágenes, videos, mp3, zip, pdf...</li>
+              <li>Se deben <i>minificar</i> los archivos de código y reducir su tamaño</li>
+              <li>Si se configura de forma adecuada, un único servidor puede distribuir archivos estáticos a velocidades de Gbits/s</li>
+              <li>Escalar un servidor de contenido estático es fácil, mucho más que en los casos anteriores</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Estrategia de distribución (1)</h2>
+            <ul>
+              <li>El servidor web debe enviar estos archivos sin que el servidor de aplicación tome parte</li>
+              <li>Una vez enviados los archivos estáticos el usuario debe utilizar la copia local que tiene</li>
+              <li>Podemos tomar provecho de las siguientes cabeceras HTTP:
+                <ul>
+                  <li><mark>Cache-Control</mark>: define el comportamiento de las cachés intermedias desde nuestro sistema hasta el usuario.</li>
+                  <li><mark>Expires</mark>: fecha de expiración de la respuesta. Decimos al navegador cuánto tiempo de validez tiene lo descargado.</li>
+                  <li><mark>Etag</mark>: entity-tag. Nos ayuda a evitar la descarga del archivo si es igual al que posee el usuario.</li>
+                  <li><mark>Last-Modified</mark>: evita la descarga del archivo por el usuario si no ha habido modificaciones respecto a su versión.</li>
+                </ul>
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Estrategia de distribución (2)</h2>
+            <ul>
+              <li>Resulta sencillo configurar Nginx para que cumpla con la estrategia de distribución anterior:
+                <pre><code data-trim>
+# Servir archivos estáticos directamente
+location ~* ^.+\.(?:css|js|jpe?g|gif|ico|png|html|xml|svg)$ {
+  add_header Cache-Control public;  # public, private, max-age...
+  expires 30d;
+  etag on;  # on, off
+}
+                </code></pre>
+              </li>
+              <li>No sólo no procesamos los archivos estáticos, sino que además hacemos que el usuario los almacene durante 30 días</li>
+              <li>Notificamos a las cachés intermedias que el contenido es de carácter público y que pueden cachearlo de forma local</li>
+              <li>Se asigna un identificador a cada archivo de forma automática</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Estrategia de distribución (3)</h2>
+            <ul>
+              <li>Archivos estáticos en nuestro dominio <a href="#">example.com</a>, o en el subdominio específico <a href="#">static.example.com</a></li>
+              <li>Existe un problema: los navegadores limitan el número de conexiones simultáneas por dominio y subdominio: Chrome (6), Firefox 3+ (6), Opera 12 (6), IE 7 (2), IE 8 (6), IE 10 (8)</li>
+              <li>Creamos múltiples subdominios: <a href="#">static0.example.com</a>, <a href="#">static1.example.com</a>, <a href="#">static2.example.com</a>...</li>
+              <li>Hay que tener cuidado: cada dominio/subdominio implica una resolución DNS, que incrementa el tiempo de carga.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Estrategia de distribución (4)</h2>
+            <div style="width: 50%; float: left;">
+              <img src="img/static_own.svg" width="100%">
+            </div>
+            <div style="width: 50%; float: left;">
+              <ul>
+                <li>Subdominios para acelerar las descargas del navegador
+                  <ul>
+                    <li><a href="#">static0.example.com</a></li>
+                    <li><a href="#">static1.example.com</a></li>
+                    <li>...</li>
+                  </ul>
+                </li>
+                <li>Escalamos clonando servidores web y dividiendo contenido estático entre ellos</li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h2>Estrategia de distribución (5)</h2>
+            <div style="width: 50%; float: left;">
+              <img src="img/static_cdn.svg" width="100%">
+            </div>
+            <div style="width: 50%; float: left;">
+              <ul>
+                <li>Servir archivos estáticos es fácil y rápido, pero podemos saturar nuestra conexión</li>
+                <li>Usar una red de distribución de contenidos (CDN):
+                  <ul>
+                    <li><a href="#">example0.cdnprovider.com</a></li>
+                    <li><a href="#">example1.cdnprovider.com</a></li>
+                    <li>...</li>
+                  </ul>
+                </li>
+                <li>El CDN recibe los archivos de nuestro servidor y los guarda en caché para distribuirlos</li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h2>Archivos estáticos en LinkedIn (1)</h2>
+            <p>LinkedIn utiliza su propio CDN: <a href="#">static.licdn.com</a></p>
+            <img src="img/sources_linkedin.png">
+            <p>Además del CDN, ¿sacan provecho de las cabeceras HTTP para reducir la transferencia de archivos?</p>
+          </section>
+
+          <section>
+            <h2>Archivos estáticos en LinkedIn (2)</h2>
+            <p>Fijémonos en un archivo estático JS y hagamos la prueba...</p>
+            <img src="img/linkedin_cache.png">
+            <p>Con cabeceras HTTP reducen el tiempo de carga de 262 ms a 75.5 ms, y evitan el envío de 177 KB (comprimidos a 62.1 KB)</p>
+          </section>
+
+          <section>
+            <h2>Realizar cómputo y almacenamiento en el navegador del usuario</h2>
+            <div style="width: 45%; float: left;">
+              <img src="img/browser_cache.svg">
+            </div>
+            <div style="width: 55%; float: left; text-align: left;">
+              <ul>
+                <li>Tal vez no seamos conscientes del todo, pero los navegadores web son una de las aplicaciones software más complejas que existen en la actualidad</li>
+                <li>Debemos sacar todo el partido a los navegadores si queremos escalar nuestro sistema</li>
+                <li><mark>No hagamos trabajo en nuestros servidores que pueda hacer el usuario con su navegador</mark></li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h2>El navegador es esencial</h2>
+            <img src="img/step5.svg" height="600">
+          </section>
+
+        </section>
+
+        <!-- Redes de datos -->
+        <section>
+
+          <section>
+            <h2>Quinto cuello de botella:<br>El servidor web</h2>
+            <div style="width: 50%; float: left;">
+              <img src="img/step5.svg">
+              <h3>La red es parte de la arquitectura</h3>
+            </div>
+            <div style="width: 50%; float: left;">
+              <ul>
+                <li>A estas alturas un único servidor web no nos permite escalar nuestro sistema</li>
+                <li>Ocurre algo aún peor: el servidor web es nuestro <mark>punto de fallo único</mark></li>
+                <li>Necesitamos utilizar varios servidores web y <mark>repartir la carga de trabajo</mark> entre ellos</li>
+                <li>Ya puestos, también necesitamos aumentar la seguridad a nivel de red</li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h2>Balanceadores de carga</h2>
+            <ul>
+              <li>Los balanceadores de carga pueden ser hardware o software</li>
+              <li>Los implementados en hardware son caros</li>
+              <li>Se consigue un resultado similar mediante servidores de DNS:
+                <ul>
+                  <li><a href="http://en.wikipedia.org/wiki/Round-robin_DNS">Round-robin DNS</a></li>
+                  <li>Si distribuímos geográficamente, entonces podemos delegar el subdominio www.example.org y hacer que su zona se sirva por nuestros servidores web. De esta forma el subdominio tendrá múltiples direcciones IPs asociadas que serán las de nuestros servidores web.</li>
+                </ul>
+              </li>
+            </ul>
+            <pre><code data-trim>
+one.example.org A 192.0.2.1
+two.example.org A 203.0.113.2
+www.example.org NS one.example.org
+www.example.org NS two.example.org
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>Firewalls</h2>
+            <ul>
+              <li>Los firewalls son útiles para solucionar problemas de seguridad en nuestro sistema</li>
+              <li>Pero por favor, no abusemos de ellos</li>
+              <li>Si no se configuran como es debido dan tantos problemas como soluciones</li>
+              <li>El rigor en la seguridad ha de ser diferente para archivos estáticos que para datos de las bases de datos</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Nuestro sistema es escalable</h2>
+            <img src="img/step6.svg" height="600">
+          </section>
+
+          <section>
+            <h2>El data center</h2>
+            <ul>
+              <li>Toda nuestra infraestructura se encuentra en un mismo lugar</li>
+              <li>Podemos identificar el data center como punto de fallo único</li>
+              <li>Si queremos disponibilidad hemos de distribuir el sistema en varios data centers en diferentes puntos de la geografía</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Nuestro sistema es muy escalable</h2>
+            <img src="img/step7.svg" height="600">
+          </section>
+
+        </section>
+
+        <!-- Resumen de la arquitectura escalable -->
+        <section>
+
+          <section>
+            <h2>Sistema escalable (0)</h2>
+            <img src="img/step0.svg" height="600">
+          </section>
+
+          <section>
+            <h2>Sistema escalable (1)</h2>
+            <img src="img/step1.svg" height="600">
+          </section>
+
+          <section>
+            <h2>Sistema escalable (2)</h2>
+            <img src="img/step2.svg" height="600">
+          </section>
+
+          <section>
+            <h2>Sistema escalable (3)</h2>
+            <img src="img/step3.svg" height="600">
+          </section>
+
+          <section>
+            <h2>Sistema escalable (4)</h2>
+            <img src="img/step4.svg" height="600">
+          </section>
+
+          <section>
+            <h2>Sistema escalable (5)</h2>
+            <img src="img/step5.svg" height="600">
+          </section>
+
+          <section>
+            <h2>Sistema escalable (6)</h2>
+            <img src="img/step6.svg" height="600">
+          </section>
+
+          <section>
+            <h2>Sistema escalable (7)</h2>
+            <img src="img/step7.svg" height="600">
+          </section>
+
+          <section>
+            <h2>Infraestructura de Wikimedia</h2>
+            <img src="img/wikimedia_servers.svg">
+          </section>
+
+        </section>
+
+        <!-- Simplificación operativa mediante servicios de terceros -->
+        <section>
+
+          <section>
+            <h2>Llegar hasta aquí es complicado</h2>
+            <img src="img/step7.svg">
+            <p>¿Hemos de pasar por todo lo anterior para poder lanzar nuestro proyecto y hacerlo disponible a gran escala?</p>
+          </section>
+
+          <section>
+            <h2>Simplificación operativa</h2>
+            <ul>
+              <li>Escalar un sistema es caro y requiere de experiencia</li>
+              <li>La ventaja competitiva de nuestro sistema se encuentra en el código del servidor de aplicación, que es lo que nosotros programamos y lo que nos hace diferentes y únicos</li>
+              <li>El resto de elementos que rodean al servidor de aplicación podrían verse como no más que "males necesarios"</li>
+            </ul>
+            <br><br><br>
+            <h3>¡Externalizar y usar servicios de terceros!</h3>
+          </section>
+
+          <section>
+            <h2>Algunas precauciones importantes</h2>
+            <ul>
+              <li>Elegir un buen proveedor. La disponibilidad de nuestro sistema dependerá por completo de ellos.</li>
+              <li>El proveedor buscará la manera más barata y sencilla (tal vez inapropiada) de darnos el servicio</li>
+              <li>Nosotros somos los responsables del sistema de cara a nuestros usuarios</li>
+              <li>Las soluciones del proveedor han de ser abiertas para no atarnos a ellos y poder migrar en caso de necesidad</li>
+              <li>No es una elección todo o nada: podemos utilizar terceros para afrontar picos de carga junto a nuestro sistema</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Proveedores</h2>
+            <ul>
+              <li>Infraestructura como servicio (<mark>IaaS</mark>)
+                <ul>
+                  <li><a href="http://aws.amazon.com/ec2/">Amazon EC2</a>, <a href="http://cloud.google.com/products/compute-engine">Google Compute Engine</a>, <a href="rackspace">Rackspace</a>, <a href="">GoGrid</a></li>
+                </ul>
+              </li>
+              <li>Plataforma como servicio (<mark>PaaS</mark>)
+                <ul>
+                  <li><a href="http://cloud.google.com/products/app-engine">Google App Engine</a>, <a href="http://www.openshift.com">Red Hat OpenShift</a>, <a href="http://www.heroku.com/">Heroku</a>, <a href="http://www.appfog.com/‎">AppFog</a>, <a href="http://www.openstack.org/">OpenStack</a>, <a href="http://www.engineyard.com/">Engine Yard</a>, <a href="http://azure.microsoft.com/">Windows Azure</a></li>
+                </ul>
+              </li>
+              <li>Software como servicio (<mark>SaaS</mark>)
+                <ul>
+                  <li>Si tenemos éxito en nuestro proyecto es aquí donde deberíamos figurar, como proveedores de servicios</li>
+                </ul>
+              </li>
+            </ul>
+          </section>
+
+          <!--
+          <section>
+            <h2>Amazon EC2</h2>
+            <iframe width="960" height="540" src="http://www.youtube.com/embed/TsRBftzZsQo?wmode=opaque&rel=0&vq=large" frameborder="0" allowfullscreen=""></iframe>
+          </section>
+          -->
+
+        </section>
+
+        <!-- Unos últimos consejos -->
+        <section>
+          <h2>Unos últimos consejos</h2>
+          <p>Como era de esperar he tenido que dejar cosas importantes fuera de la charla por limitaciones de tiempo</p>
+          <ul>
+            <li>Evita la sobreingeniería</li>
+            <li>No permitas los puntos de fallo únicos (redundancia como garantía para hacer robusto a tu sistema)</li>
+            <li><mark>Los fallos y las excepciones de tu sistema son un flujo de ejecución más y se han de tratar de forma conveniente</mark></li>
+            <li>La herramienta concreta para el problema específico</li>
+            <li>Sé ahorrativo en todo cuanto hagas: procesos simples, algoritmos sencillos, utilización intensiva de caché...</li>
+          </ul>
+        </section>
+
+        <!-- Enlaces de interés -->
+        <section>
+          <h2>Enlaces de interés</h2>
+          <small>
+          <ul>
+            <li><a href="http://scalabilityrules.com/">Scalability Rules: 50 Principles for Scaling Web Sites</a></li>
+            <li><a href="http://theartofscalability.com/">The Art of Scalability: Scalable Web Architecture, Processes, and Organizations for the Modern Enterprise</a></li>
+            <li><a href="http://www.youtube.com/watch?v=w5WVu624fY8">Seattle Conference on Scalability: YouTube Scalability</a></li>
+            <li><a href="http://www.youtube.com/watch?v=OY7QGDg93Ic">Webinar: Decomposing Applications for Deployability and Scalability</a></li>
+            <li><a href="http://www.youtube.com/watch?v=AgaL6NGpkB8">Google I/O 2009 - Building Scalable, Complex Apps on App Engine</a></li>
+            <li><a href="http://www.youtube.com/watch?v=2WuT2rdLK5A">Scalable Internet Architectures - Theo Schlossnagle</a></li>
+          </ul>
+          </small>
+        </section>
+
+        <!-- Fin de la charla -->
+				<section>
+          <h2>Gracias por vuestra atención</h2>
+					<h2>¿Preguntas?</h2>
+          <br>
+          <p><a href="http://javiermatos.com">Javier Matos Odut</a></p>
+          <p><small><a href="mailto:iam@javiermatos.com">iam@javiermatos.com</a></small></p>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="revealjs/lib/js/head.min.js"></script>
+		<script src="revealjs/js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+        fragments: true,
+        slideNumber: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'none', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Parallax scrolling
+				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				// parallaxBackgroundSize: '2100px 900px',
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'revealjs/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'revealjs/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'revealjs/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'revealjs/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'revealjs/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'revealjs/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
